@@ -16,6 +16,8 @@ DBConnect();
 //api endpoints
 app.use('/api/food', foodRouter)
 app.use('/images', express.static("uploads"))
+// app.use('/api/food')
+
 
 //middleware 
 app.use(express.json())
