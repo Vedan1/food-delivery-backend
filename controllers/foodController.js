@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
 import fs from "fs"
 import foodModel from "../models/foodModel.js";
-//adding Food
+
+//ADDING FOOD API
 const addFood= async (req,res)  =>{
 
     let image_fname = `${req.file.filename}`;
@@ -25,6 +26,8 @@ const addFood= async (req,res)  =>{
 
 }
 
+
+//LISTING ALL FOOD API
 const listFood = async (req,res) => {
     try{
         const foods = await foodModel.find({})
@@ -36,17 +39,22 @@ const listFood = async (req,res) => {
 }
 
 
+//REMOVING ALL FOOD API
+//needs to be worked on 
 const removeFood = async (req,res) =>{
     try{
-        const food = await foodModel.findById(req.body.id);
-        fs.unlink(`uploads/${food.image}`,()=>{})
+        // console.log(req.body.json())
+        const {id} = req.params.id
+        const food = await foodModel.findById(req.params.id);
+        
+        //fs.unlink(`uploads/${food.image}`,()=>{})
 
-        await foodModel.findByIdAndDelete(req.body.id)
+        await foodModel.findByIdAndDelete(id)
         res.json({success:true, message: 'Food removed successfully'})
     }
     catch(error){
         console.error(error)
-        res.status(500).json({success:false, message: 'Server error WHILE rEMOVING'})
+        res.status(500).json({success:false, message: `Server error WHILE rEMOVING ${error}`})
     }
 }
 export {addFood, listFood,removeFood}
